@@ -1,6 +1,6 @@
 {
     "name": "sweet-type-tools",
-    "version": "0.0.1",
+    "version": "0.1.0",
     "description": "A library that combines TypeScript and runtime checks for easier and safer JS coding.",
     "keywords": [
         "sweet",
