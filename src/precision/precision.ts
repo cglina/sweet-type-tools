@@ -1,6 +1,6 @@
-import { isBooleanString, isNumeric } from "../tools/checks.js";
-import { preciseBaseRootList, type BaseTypeName, type PreciseBaseName, type PreciseBaseRoot } from "../tools/typeNames.js";
-import { sweetBase } from "./base.js";
+import { isBooleanString, isNumeric } from "../src/tools/labelChecks.js";
+import { preciseBaseRootList, type BaseTypeName, type PreciseBaseName, type PreciseBaseRoot } from "../src/tools/typeNames.js";
+import { sweetBase } from "../src/sweetBaseOLD.js";
 
 /**
  * Distinguishes between Sweet string categories:
@@ -13,18 +13,18 @@ import { sweetBase } from "./base.js";
  * @returns The most precise matching string type
  *
  * @example
- * preciseStringType("12")
+ * preciseStringLabel("12")
  * // "numeric"
  *
  * @example
- * preciseStringType("true")
+ * preciseStringLabel("true")
  * // "booleanString"
  *
  * @example
- * preciseStringType("hello")
+ * preciseStringLabel("hello")
  * // "string"
  */
-export function preciseStringType(
+export function preciseStringLabel(
     item: string
 ): 'numeric' | 'booleanString' | 'string' {
     if (isNumeric(item)) return 'numeric'
@@ -148,7 +148,7 @@ export function sweetPrecise(item: any): PreciseBaseName {
     const baseType = sweetBase(item)
 
     if (isPreciseBaseRoot(baseType)) return baseType
-    if (baseType === 'string') return preciseStringType(item)
+    if (baseType === 'string') return preciseStringLabel(item)
     if (baseType === 'boolean') return preciseBoolean(item)
 
     return 'undefined'
