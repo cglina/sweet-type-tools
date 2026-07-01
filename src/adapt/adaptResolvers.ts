@@ -16,15 +16,11 @@ export function normalizeStringVal(value: string): string {
 }
 
 
-function numericAdaptConfigResolver(settings?: NumericAdaptConfig): NumericAdaptConfig {
+function resolveNumericAdaptConfig(settings?: Partial<NumericAdaptConfig>): NumericAdaptConfig {
     return { ...defaultNumericAdaptConfig, ...settings }
 
 }
 
-function NumericAdaptConfigResolver(settings?: Partial<NumericAdaptConfig>): NumericAdaptConfig {
-    return { ...defaultNumericAdaptConfig, ...settings }
-
-}
 
 export function numericStringFallback(value: string, mode: IfNotNumericReturn): false | 0 | string {
     if (mode === "false") return false
@@ -98,7 +94,7 @@ export function ifNumericString(
 ): number | bigint | false | string {
     const normalized = normalizeStringVal(value)
     const { bigint, nan, zero, empty, textString } =
-        NumericAdaptConfigResolver(settings)
+        resolveNumericAdaptConfig(settings)
 
     if (normalized === "") {
         return numericStringFallback(value, empty)
@@ -113,14 +109,14 @@ export function ifNumericString(
         return NaN
     }
 
-    const asNumber = Number(normalized)
+    const numericValue = Number(normalized)
 
-    if (!Number.isNaN(asNumber)) {
-        if (asNumber === 0) {
+    if (!Number.isNaN(numericValue)) {
+        if (numericValue === 0) {
             return numericStringFallback(value, zero)
         }
 
-        return asNumber
+        return numericValue
     }
 
     try {
@@ -199,7 +195,7 @@ export function ifNumeric(value: NumericTypes, settings?: NumericAdaptConfig): n
     if (resolvedVal === false) return false
     if (typeof resolvedVal === "string") return resolvedVal
 
-    const { bigint, nan, zero } = numericAdaptConfigResolver(settings) as Required<NumericAdaptConfig>
+    const { bigint, nan, zero } = resolveNumericAdaptConfig(settings) as Required<NumericAdaptConfig>
 
     if (typeof resolvedVal === "bigint") return bigint ? resolvedVal : false
     if (Number.isNaN(resolvedVal)) return nan ? resolvedVal : false

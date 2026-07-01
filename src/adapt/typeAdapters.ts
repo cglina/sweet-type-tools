@@ -33,26 +33,26 @@ import { ifNumericString, normalizeStringVal } from "./adaptResolvers.js";
  * - functions
  *
  * @example
- * asBoolean("hello")
+ * toBoolean("hello")
  * // true
  *
  * @example
- * asBoolean("")
+ * toBoolean("")
  * // false
  *
  * @example
- * asBoolean("false")
+ * toBoolean("false")
  * // false
  *
  * @example
- * asBoolean([1])
+ * toBoolean([1])
  * // true
  *
  * @example
- * asBoolean([])
+ * toBoolean([])
  * // false
  */
-export function asBoolean(value: any): boolean {
+export function toBoolean(value: any): boolean {
     const baseType = sweetType(value)
 
     if (baseType === "boolean") return value
@@ -100,38 +100,38 @@ export function asBoolean(value: any): boolean {
  * - bigint-compatible strings return `0`
  *
  * @example
- * asNumber(true)
+ * toNumber(true)
  * // 1
  *
  * @example
- * asNumber(false)
+ * toNumber(false)
  * // 0
  *
  * @example
- * asNumber([1, 2, 3])
+ * toNumber([1, 2, 3])
  * // 3
  *
  * @example
- * asNumber({ a: 1, b: 2 })
+ * toNumber({ a: 1, b: 2 })
  * // 2
  *
  * @example
- * asNumber("42")
+ * toNumber("42")
  * // 42
  *
  * @example
- * asNumber("zero")
+ * toNumber("zero")
  * // 0
  *
  * @example
- * asNumber("hello")
+ * toNumber("hello")
  * // 0
  *
  * @example
- * asNumber(Symbol("id"))
+ * toNumber(Symbol("id"))
  * // 1
  */
-export function asNumber(value: any): number {
+export function toNumber(value: any): number {
     const baseType = sweetType(value)
 
     if (baseType === "boolean") return value ? 1 : 0

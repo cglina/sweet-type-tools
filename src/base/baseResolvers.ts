@@ -2,19 +2,13 @@ import { type BaseObjectLabel, type BaseTypeLabel, type JSObject } from "./baseL
 
 
 /**
- * Detects the TypeTools basic type of a value.
+ * Resolves the Sweet TypeTools base type of a value.
  *
  * Similar to JavaScript `typeof`, but with TypeTools fixes:
  * - arrays return `"array"` instead of `"object"`
  * - `null` returns `"null"` instead of `"object"`
- * - non-array objects return `"object"`
- * - `NaN` returns `"undefined"` because it is not considered
- *   a valid TypeTools number
+ * - `NaN` returns `"undefined"` because it is not considered a valid number
  *
- * @param item - The value to inspect
- *
- * @returns The detected TypeTools basic type label 
- * 
  * @example
  * sweetType("hello")
  * // "string"
@@ -37,19 +31,14 @@ export function sweetType(item: any): BaseTypeLabel {
     return typeof item as BaseTypeLabel
 }
 
-/////////////// OBJECT RESOLVERS ///////////////
-
 /**
- * Detects the TypeTools object-like basic type
- * 
- * Separates JavaScript's broad `"object"` category into:
+ * Resolves JavaScript object-like values into Sweet TypeTools base labels.
+ *
+ * JavaScript groups objects, arrays, and `null` under `typeof "object"`.
+ * Sweet TypeTools separates them into:
  * - `"object"` — non-null, non-array object
  * - `"array"` — array
  * - `"null"` — null
- *
- * @param item - A JavaScript object-like value to inspect
- *
- * @returns The Sweet object-like base type name
  *
  * @example
  * baseObjectLabel({ a: 1 })

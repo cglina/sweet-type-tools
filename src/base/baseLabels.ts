@@ -3,26 +3,25 @@
 /**
  * Standard base type names supported by Sweet TypeTools.
  *
- * These mostly follow JavaScript `typeof` behavior, with a few additions:
- * - `array`: `object` & `array` are considered distinct types
- * - `null`: in JS, would return type `object`; Sweet TypeTools names `null` as a distinct type
- * - `NaN`: returns `number` in JS; considered `undefined` in *TypeTools*
+ * These mostly follow JavaScript `typeof` behavior, with a few TypeTools fixes:
+ * - `array`: arrays are treated as their own base type instead of `object`
+ * - `null`: `null` is treated as its own base type instead of `object`
+ * - `NaN`: treated as `undefined`, because it is not considered a valid number
  */
 export type BaseTypeLabel =
     'string' | 'object' | 'number' | 'array' | 'symbol' | 'boolean' | 'function' | 'bigint' | 'undefined' | 'null'
 
 /**
- * A list of standard base type labels.
- * 
+ * List type for standard base type labels.
  */
 export type BaseTypeLabels = BaseTypeLabel[]
 
 
 /**
- * Runtime list of all supported base type names.
+ * Runtime list of all supported base type labels.
  *
- * Useful for validation, iteration, dropdowns, docs generation,
- * and internal Sweet TypeTools dispatchers.
+ * Useful for validation, iteration, docs generation,
+ * dropdowns, and internal TypeTools dispatchers.
  */
 export const baseLabelList: BaseTypeLabels = [
     'string',
@@ -37,23 +36,43 @@ export const baseLabelList: BaseTypeLabels = [
     'null',
 ]
 
-/** Types that are considered `'object'` using JS `typeof`*/
+/**
+ * Values that JavaScript sees as `typeof "object"`.
+ *
+ * Sweet TypeTools separates these into:
+ * - `object`
+ * - `array`
+ * - `null`
+ */
 export type JSObject = object | any[] | null
 
-/** Base labels that may result from values JS sees as typeof "object". */
+/**
+ * Base labels that may result from values JavaScript sees as `typeof "object"`.
+ */
 export type BaseObjectLabel = 'object' | 'array' | 'null'
 
-/** Describes a simple object */
+/**
+ * Object with string keys and arbitrary values.
+ */
 export type SimpleObject = Record<string, any>
 
-/** Property key types */
+/**
+ * Supported JavaScript property key types.
+ */
 export type PropertyKey = string | symbol | number
 
-/** Any non-null, non-array object, including objects with string, number, or symbol keys. */
+/**
+ * Any non-null, non-array object.
+ *
+ * Includes objects with string, number, or symbol keys.
+ */
 export type BaseObject = object
 
 /**
- * JS type names that remain unchanged regardless of other sweet label finders.
+ * JavaScript type names that do not need special TypeTools handling.
+ *
+ * These labels can be returned directly because TypeTools does not split
+ * or reinterpret them at the Base layer.
  */
 export type BaseUnchangedLabel =
     | 'function'
@@ -62,7 +81,7 @@ export type BaseUnchangedLabel =
     | 'bigint'
 
 /**
- * Runtime list of JS type names that remain unchanged regardless of other sweet label finders.
+ * Runtime list of JavaScript type names that do not need special TypeTools handling.
  */
 export const baseFinalList: BaseUnchangedLabel[] = [
     'function',

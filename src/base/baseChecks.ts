@@ -1,3 +1,5 @@
+import type { BaseObject } from "./baseLabels.js";
+
 /*
     ------------------------ BASE ------------------------
 
@@ -7,14 +9,11 @@
     'boolean', 'function', 'bigint', 'undefined', 'null'
 */
 
-import type { BaseObject } from "./baseLabels.js";
-
 /**
- * Returns true if the value is a string.
- * 
+ * Returns `true` if the value is a string.
+ *
  * @example
  * isString("hello")
- *  
  * // true
  */
 export function isString(item: any): item is string {
@@ -22,11 +21,10 @@ export function isString(item: any): item is string {
 }
 
 /**
- * Returns true if the value is a boolean.
- * 
+ * Returns `true` if the value is a boolean.
+ *
  * @example
  * isBoolean(true)
- *  
  * // true
  */
 export function isBoolean(item: any): item is boolean {
@@ -34,63 +32,68 @@ export function isBoolean(item: any): item is boolean {
 }
 
 /**
- * Returns true if the value is a non-null, non-array object.
+ * Returns `true` if the value is a non-null, non-array object.
  *
- * Arrays return false because TypeTools treats `array`
- * as its own base type.
+ * Sweet TypeTools treats arrays and `null` as separate base types,
+ * so both return `false`.
  *
  * @example
  * isObject({ a: 1 })
  * // true
  *
+ * @example
  * isObject([1, 2])
+ * // false
+ *
+ * @example
+ * isObject(null)
  * // false
  */
 export function isObject(item: any): item is BaseObject {
     return item !== null && typeof item === "object" && !Array.isArray(item)
 }
 
+
 /**
  * Returns `true` if the value is a valid number.
  *
- * Unlike JavaScript's raw `typeof` behavior, this returns `false` for `NaN`
- * because `NaN` cannot be used as a valid numeric value.
+ * Unlike JavaScript's raw `typeof` behavior, this returns `false`
+ * for `NaN`, because `NaN` is not considered a valid TypeTools number.
  *
  * @example
  * isNumber(12)
- *  
  * // true
- * 
+ *
+ * @example
  * isNumber(0)
- *  
  * // true
- * 
+ *
+ * @example
  * isNumber(NaN)
- *  
  * // false
  */
 export function isNumber(item: any): item is number {
     return typeof item === 'number' && !Number.isNaN(item)
 }
 
+
 /**
- * Returns true if the value is a bigint.
- * 
+ * Returns `true` if the value is a bigint.
+ *
  * @example
  * isBigint(10n)
- *  
  * // true
  */
 export function isBigint(item: any): item is bigint {
     return typeof item === 'bigint'
 }
 
+
 /**
- * Returns true if the value is `undefined`.
- * 
+ * Returns `true` if the value is `undefined`.
+ *
  * @example
  * isUndefined(undefined)
- *  
  * // true
  */
 export function isUndefined(item: any): item is undefined {
@@ -105,15 +108,14 @@ export function isUndefined(item: any): item is undefined {
  *
  * @example
  * isNull(null)
- *  
  * // true
- * 
+ *
+ * @example
  * isNull(undefined)
- *  
  * // false
- * 
- * isNull({})  
- *  
+ *
+ * @example
+ * isNull({})
  * // false
  */
 export function isNull(item: any): item is null {
@@ -123,11 +125,15 @@ export function isNull(item: any): item is null {
 /**
  * Returns `true` if the value is an array.
  *
+ * Sweet TypeTools treats arrays as their own base type,
+ * separate from `object`.
+ *
  * @example
- * isArray([1, 2])  
+ * isArray([1, 2])
  * // true
- * 
- * isArray("hello")  
+ *
+ * @example
+ * isArray("hello")
  * // false
  */
 export function isArray(item: any): item is unknown[] {
@@ -137,38 +143,19 @@ export function isArray(item: any): item is unknown[] {
 /**
  * Returns `true` if the value is a function.
  *
- * Includes:
- * - standard functions
- * - arrow functions
- * - async functions
- * - class constructors
- * - generator functions
- *
- * Uses JavaScript's native:
- * `typeof item === "function"`
- *
- * @example
- * isFunction(function hello() {})
- * // true
+ * Includes standard functions, arrow functions, async functions,
+ * class constructors, and generator functions.
  *
  * @example
  * isFunction(() => {})
  * // true
  *
  * @example
- * isFunction(async () => {})
- * // true
- *
- * @example
- * isFunction(class Test {})
+ * isFunction(class User {})
  * // true
  *
  * @example
  * isFunction("hello")
- * // false
- *
- * @example
- * isFunction({})
  * // false
  */
 export function isFunction(item: any): item is Function {

@@ -60,9 +60,9 @@ export function isNumericString(value: any, settings?: NumericSettings): boolean
     if (trimmed === "0") return zero
     if (trimmed.toLowerCase() === "nan") return nan
 
-    const asNumber = Number(trimmed)
+    const toNumber = Number(trimmed)
 
-    if (!Number.isNaN(asNumber)) return true
+    if (!Number.isNaN(toNumber)) return true
 
     if (!bigint) return false
 
