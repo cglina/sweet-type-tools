@@ -1,5 +1,20 @@
 # Sweet *TypeTools*
 
+*Sweet TypeTools* is a **lightweight runtime type library** for JavaScript and TypeScript.
+
+It extends JavaScript's native `typeof` with **more practical runtime type detection** ([base](#base)), **value refinement** ([x](#x)), and **flexible value interpretation** ([adapt](#adapt)).
+
+## Contents
+- [Installation](#installation)
+- [Philosophy](#philosophy)
+- [Base](#base)
+- [X](#x)
+- [Adapt](#adapt)
+- [Quick reference](#quick-reference)
+
+## Installation
+
+
 ## Base
 
 `sweetType()` is the foundation of **Sweet TypeTools**.
