@@ -1,8 +1,26 @@
-import { isArray, isNumber, isObject, isString } from "../base/checks.js";
+import { isArray, isObject, isString } from "../base/baseChecks.js";
 import { arrayX, numberX, objectX, stringX } from "../x/xChecks.js";
-import { type NumericSettings, type NumericTypes } from "./adaptLabels.js";
-import { ifNumeric, normalizeStringVal, numericConfigResolver } from "./adaptResolvers.js";
+import { defaultNumericConfig, type NumericAdaptConfig, type NumericSettings, type NumericTypes } from "./adaptLabels.js";
+import { ifNumeric, normalizeStringVal } from "./adaptResolvers.js";
 
+/**
+ * Internal helper.
+ * 
+ * Merges custom numeric settings with the default numeric configuration.
+ *
+ * Any setting not provided will fall back to `defaultNumericConfig`.
+ *
+ * @example
+ * numericConfigResolver()
+ * // { bigint: true, nan: false, zero: true }
+ *
+ * @example
+ * numericConfigResolver({ nan: true })
+ * // { bigint: true, nan: true, zero: true }
+ */
+function numericConfigResolver(settings?: NumericSettings): NumericSettings {
+    return { ...defaultNumericConfig, ...settings }
+}
 
 /**
  * Returns `true` if a string can be interpreted as numeric.
@@ -56,9 +74,57 @@ export function isNumericString(value: any, settings?: NumericSettings): boolean
     }
 }
 
-
+/**
+ * Returns `true` if a value can be interpreted as numeric.
+ *
+ * Uses the numeric adapter internally, but returns a simple boolean.
+ *
+ * `NumericSettings` provides simple accept/reject controls:
+ * - `zero`: accepts or rejects zero-like values
+ * - `bigint`: accepts or rejects bigint values
+ * - `nan`: accepts or rejects `NaN`
+ * - `empty`: accepts or rejects empty / whitespace-only strings
+ *
+ * Non-numeric text always returns `false`.
+ *
+ * @example
+ * isNumeric(13)
+ * // true
+ *
+ * @example
+ * isNumeric("13")
+ * // true
+ *
+ * @example
+ * isNumeric("zero")
+ * // true
+ *
+ * @example
+ * isNumeric("abc")
+ * // false
+ *
+ * @example
+ * isNumeric("NaN")
+ * // false
+ *
+ * @example
+ * isNumeric("NaN", { nan: true })
+ * // true
+ *
+ * @example
+ * isNumeric("", { empty: true })
+ * // true
+ */
 export function isNumeric(value: NumericTypes, settings?: NumericSettings): boolean {
-    return ifNumeric(value, settings) !== false
+    const { bigint, nan, zero, empty } = numericConfigResolver(settings)
+    const adaptedConfig = {
+        zero: zero === true ? 'value' : 'false',
+        bigint: bigint === true ? 'value' : 'false',
+        nan: nan === true ? 'value' : 'false',
+        empty: empty === true ? 'value' : 'false',
+        textString: 'false'
+    } as NumericAdaptConfig
+    return ifNumeric(value, adaptedConfig) !== false
 }
 
 /**

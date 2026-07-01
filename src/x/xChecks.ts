@@ -1,4 +1,4 @@
-import { isNumber, isObject, isString } from "../base/checks.js";
+import { isNumber, isObject, isString } from "../base/baseChecks.js";
 
 /**
  * Returns `true` if the value is a non-empty usable string.

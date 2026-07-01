@@ -1,4 +1,4 @@
-import { type BaseObjectLabel, type BaseTypeLabel, type JSObject } from "./labels.js";
+import { type BaseObjectLabel, type BaseTypeLabel, type JSObject } from "./baseLabels.js";
 
 
 /**

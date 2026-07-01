@@ -1,5 +1,5 @@
-import { isArray, isNull } from "../base/checks.js";
-import type { JSObject } from "../base/labels.js";
+import { isArray, isNull } from "../base/baseChecks.js";
+import type { JSObject } from "../base/baseLabels.js";
 import { arrayX, numberX, objectX, stringX, symbolX } from "./xChecks.js";
 import { jsFinalXLabelList, type ArrayXLabel, type JSFinalXLabel, type NumberXLabel, type ObjectXLabel, type StringXLabel, type SymbolXLabel, type XName } from "./xLabels.js";
 

@@ -7,7 +7,7 @@
     'boolean', 'function', 'bigint', 'undefined', 'null'
 */
 
-import type { BaseObject } from "./labels.js";
+import type { BaseObject } from "./baseLabels.js";
 
 /**
  * Returns true if the value is a string.
