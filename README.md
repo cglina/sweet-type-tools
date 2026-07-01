@@ -14,6 +14,10 @@ It extends JavaScript's native `typeof` with **more practical runtime type detec
 
 ## Installation
 
+To install *TypeTools*, run the following command on a terminal in your project folder:
+```bash
+npm install sweet-js-tools
+```
 
 ## Base
 
