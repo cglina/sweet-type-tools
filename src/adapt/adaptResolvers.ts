@@ -1,7 +1,10 @@
 import { isBooleanString } from "./adaptChecks.js";
 import { defaultNumericConfig, defaultNumericAdaptConfig, type AdapterResultMode, type IfNotNumericReturn, type NumericSettings, type NumericAdaptConfig, type NumericTypes } from "./adaptLabels.js";
 
-/** Trims and converts any uppercase letters to lowercase.
+/**
+ * Normalizes a string for value interpretation.
+ *
+ * Trims surrounding whitespace and converts letters to lowercase.
  * 
  * @example
  * normalizeStringVal("  HELLO  ")
@@ -21,7 +24,9 @@ function resolveNumericAdaptConfig(settings?: Partial<NumericAdaptConfig>): Nume
 
 }
 
-
+/**
+ * Returns the fallback value for a failed numeric string adaptation.
+ */
 export function numericStringFallback(value: string, mode: IfNotNumericReturn): false | 0 | string {
     if (mode === "false") return false
     if (mode === "zero") return 0
@@ -29,32 +34,14 @@ export function numericStringFallback(value: string, mode: IfNotNumericReturn): 
 }
 
 /**
- * Adapts a string into a numeric value when possible.
+ * Attempts to interpret a string as a numeric value.
  *
- * This adapter treats each special string case independently through
- * `NumericAdaptConfig`.
- *
- * **Returns:**
- * - a `number` for regular numeric strings
- * - a `bigint` for bigint-compatible strings, depending on `bigint`
- * - `NaN`, `0`, `false`, or the original value for `"NaN"`, depending on `nan`
- * - `0`, `false`, or the original value for zero-like strings, depending on `zero`
- * - `0`, `false`, or the original value for empty strings, depending on `empty`
- * - `0`, `false`, or the original value for non-numeric text, depending on `textString`
- *
- * Special string cases:
- * - `""` / whitespace-only strings are controlled by `empty`
- * - `"zero"` and numeric zero strings like `"0"` are controlled by `zero`
- * - `"nan"` is controlled by `nan`
- * - non-numeric text is controlled by `textString`
- *
- * `IfNotNumericReturn` modes:
- * - `"zero"` → returns `0`
- * - `"false"` → returns `false`
- * - `"value"` → returns the original string
- *
- * **Default config:**
- * `{ bigint: "value", nan: "zero", empty: "zero", zero: "zero", textString: "value" }`
+ * Uses `NumericAdaptConfig` to decide what each special case should return:
+ * - bigint-compatible strings
+ * - `"NaN"`
+ * - zero-like strings
+ * - empty strings
+ * - non-numeric text
  *
  * @example
  * ifNumericString("13")
@@ -130,34 +117,11 @@ export function ifNumericString(
     }
 }
 
-
-
-
-
 /**
- * Converts a numeric-like value when possible.
+ * Attempts to interpret a value as numeric.
  *
- * Accepts:
- * - numbers
- * - bigints
- * - numeric strings
- *
- * **Returns:**
- * - a `number` for valid number values or numeric strings
- * - a `bigint` for bigint values or bigint-compatible strings
- * - the original string when string adaptation fails and `resultMode` is `"value"`
- * - `false` when the value is rejected and `resultMode` is `"false"`
- * - `0` when the value is rejected and `resultMode` is `"zero"`
- *
- * Respects `NumericAdaptConfig`:
- * - `zero`: allows or rejects values that resolve to `0`
- * - `nan`: allows or rejects `NaN`
- * - `bigint`: allows or rejects `bigint` values
- * - `empty`: allows or rejects empty / whitespace-only strings
- * - `resultMode`: controls what is returned when string adaptation fails
- *
- * **When absent, settings default to:**
- * `{ bigint: false, nan: false, zero: true, empty: false, resultMode: "zero" }`
+ * Accepts numbers, bigints, and strings.
+ * Strings are delegated to `ifNumericString()`.
  *
  * @example
  * ifNumeric(13)

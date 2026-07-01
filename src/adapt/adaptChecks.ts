@@ -77,13 +77,8 @@ export function isNumericString(value: any, settings?: NumericSettings): boolean
 /**
  * Returns `true` if a value can be interpreted as numeric.
  *
- * Uses the numeric adapter internally, but returns a simple boolean.
- *
- * `NumericSettings` provides simple accept/reject controls:
- * - `zero`: accepts or rejects zero-like values
- * - `bigint`: accepts or rejects bigint values
- * - `nan`: accepts or rejects `NaN`
- * - `empty`: accepts or rejects empty / whitespace-only strings
+ * Uses `ifNumeric()` internally so numeric interpretation
+ * stays centralized in the adapter layer.
  *
  * Non-numeric text always returns `false`.
  *
@@ -169,9 +164,9 @@ export function isNullish(item: any): boolean {
  * - empty or whitespace-only strings
  * - `0`
  * - empty arrays
- * - empty (non-array) objects
+ * - empty objects
  *
- * Values like `false`, functions, symbols, and bigints are not treated as empty.
+ * `false`, functions, symbols, and bigints are not treated as empty.
  *
  * @example
  * isEmptyVal("") // true

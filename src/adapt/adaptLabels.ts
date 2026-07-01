@@ -1,11 +1,11 @@
-
 /**
- * Used in `'isNumeric()'` and `'ifNumeric()'` to narrow input types for `value` param.
+ * Value types accepted by numeric adaptation helpers.
  */
 export type NumericTypes = string | number | bigint
 
 /**
- * Used in `'isBooleanString()'` settings to determine return type.
+ * Return modes for adapters that can either preserve the original value
+ * or return `false` when adaptation fails.
  */
 export type AdapterResultMode = 'false' | 'value'
 
@@ -15,14 +15,16 @@ export type AdapterResultMode = 'false' | 'value'
 export type AdaptedZero = 0 | false
 
 /**
- * Extends 'AdapterResultMode' to include 'zero' as a return option.
- * 
- * Used in input settings & default values for `'ifNumericString()'`.
+ * Return modes for numeric fallback cases.
+ *
+ * - `"value"` → return the original value
+ * - `"false"` → return `false`
+ * - `"zero"` → return `0`
  */
 export type IfNotNumericReturn = AdapterResultMode | 'zero'
 
 /**
- * Used in `'isNumericString()'` and `'isNumeric()'` to determine return settings.
+ * Simple accept/reject settings for `isNumeric()` and `isNumericString()`.
  */
 export interface NumericSettings {
     bigint?: boolean;
@@ -32,7 +34,7 @@ export interface NumericSettings {
 }
 
 /**
- * Used in `'isNumericString()'` to determine return settings.
+ * Default return settings used in `'isNumericString()'`.
  */
 export const defaultNumericConfig: NumericSettings = {
     bigint: false,
@@ -43,6 +45,11 @@ export const defaultNumericConfig: NumericSettings = {
 
 
 
+/**
+ * Full fallback configuration for numeric adaptation.
+ *
+ * Each special case controls its own return behavior.
+ */
 export interface NumericAdaptConfig {
     bigint: IfNotNumericReturn
     nan: IfNotNumericReturn
@@ -51,6 +58,9 @@ export interface NumericAdaptConfig {
     textString: IfNotNumericReturn
 }
 
+/**
+ * Default return settings for numeric adapters.
+ */
 export const defaultNumericAdaptConfig: NumericAdaptConfig = {
     bigint: "value",
     nan: "zero",

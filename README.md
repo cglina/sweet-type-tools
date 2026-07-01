@@ -235,3 +235,152 @@ sweetXCheck()
 ```
 
 These functions return or compare X-layer labels in the same way that `sweetType()` and `sweetTypeCheck()` work for the Base layer.
+
+## Adapt
+
+The **Adapt** layer builds on both Base and X.
+
+While the previous layers focus on **identifying** and **refining** values, Adapt focuses on **interpreting** and **converting** them.
+
+Many values can be interpreted in more than one way.
+
+For example:
+
+- `"42"` can be interpreted as the number `42`
+- `"TRUE"` can be interpreted as the boolean `true`
+- `"  hello  "` may simply need normalization before further processing
+
+The Adapt layer provides small, composable helpers that make these interpretations predictable and reusable.
+
+### Adapt function families
+
+Adapt functions follow three naming patterns:
+
+```ts
+is...
+```
+
+Returns whether a value **can be interpreted** as something.
+
+```ts
+isNumeric("42")
+// true
+
+isBooleanString("TRUE")
+// true
+```
+
+---
+
+```ts
+if...
+```
+
+Attempts the interpretation and returns the adapted value.
+
+If adaptation is not possible, the return value depends on the adapter's configuration.
+
+```ts
+ifNumeric("42")
+// 42
+
+ifNumeric("hello")
+// "hello"
+
+ifBooleanString("TRUE")
+// true
+
+ifBooleanString("hello")
+// "hello"
+```
+
+---
+
+```ts
+to...
+```
+
+Converts any value into a concrete target type using Sweet TypeTools value rules.
+
+Unlike the `if...` adapters, these always return the target type.
+
+```ts
+toNumber("42")
+// 42
+
+toNumber("hello")
+// 5
+
+toBoolean([])
+// false
+
+toBoolean([1, 2])
+// true
+```
+
+### Adapt pipeline
+
+Most Adapt helpers are intentionally built on top of one another.
+
+Rather than duplicating logic, each helper performs a single step before delegating to the next one.
+
+```text
+normalize
+    ↓
+is
+    ↓
+if
+    ↓
+to
+```
+
+For example, numeric adaptation follows this flow:
+
+```text
+normalizeStringVal()
+        ↓
+isNumericString()
+        ↓
+ifNumericString()
+        ↓
+ifNumeric()
+        ↓
+toNumber()
+```
+
+This keeps the library consistent, easier to maintain, and easier to extend as new adapters are added.
+
+### Current adapters
+
+The Adapt layer currently includes:
+
+#### Helpers
+
+```ts
+normalizeStringVal()
+```
+
+#### Checks
+
+```ts
+isNumeric()
+isNumericString()
+isBooleanString()
+isNullish()
+isEmptyVal()
+```
+
+#### Adapters
+
+```ts
+ifNumeric()
+ifNumericString()
+ifBooleanString()
+```
+
+#### Type converters
+
+```ts
+toNumber()
+toBoolean()
+```
