@@ -5,24 +5,24 @@ import { jsFinalXLabelList, type ArrayXLabel, type JSFinalXLabel, type NumberXLa
 
 
 /**
- * Resolves an array into its X-layer type label.
+ * Resolves an array into its X-layer label.
  *
  * Returns:
- * - `"array"` when the array is usable
- * - `"arrayX"` when the array is empty
+ * - `"array"` for usable, non-empty arrays
+ * - `"arrayX"` for empty arrays
  */
 export function arrayXType(item: any): ArrayXLabel {
     return arrayX(item) ? 'array' : 'arrayX'
 }
 
 /**
- * Resolves an object-like value into its X-layer type label.
+ * Resolves an object-like value into its X-layer label.
  *
  * Returns:
- * - `"object"` for usable non-empty objects
  * - `"objectX"` for empty objects
  * - `"array"` / `"arrayX"` for arrays
  * - `"null"` for null
+ * - `"object"` for usable objects **with at least one own enumerable key**
  */
 export function objectXType(item: JSObject): ObjectXLabel {
     if (isNull(item)) return 'null'
@@ -31,11 +31,11 @@ export function objectXType(item: JSObject): ObjectXLabel {
 }
 
 /**
- * Resolves a number into its X-layer type label.
+ * Resolves a number into its X-layer label.
  *
  * Returns:
  * - `"number"` for usable non-zero numbers
- * - `"numberX"` for unusable numbers, including `0` and `NaN`
+ * - `"numberX"` for `0` or invalid numbers
  */
 export function numberXType(item: number): NumberXLabel {
     return numberX(item) ? 'number' : 'numberX'
@@ -64,10 +64,10 @@ export function stringXType(item: string): StringXLabel {
 }
 
 /**
- * Resolves any value into its TypeTools X-layer type label.
+ * Resolves any value into its X-layer label.
  *
- * X-layer labels mark values that have the expected base type
- * but are not considered usable by TypeTools.
+ * Base tells you what a value is.
+ * X tells you whether supported values are usable.
  *
  * Examples:
  * - `""` → `"stringX"`
